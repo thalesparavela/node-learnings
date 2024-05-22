@@ -1,22 +1,24 @@
+require("express-async-errors");
+const appError = require("./utils/app.error");
 const express = require("express");
+const routes = require("./routes");
+
 const app = express();
-app.get("/message/:id/:user", (request, response) => {
-  const { id, user } = request.params;
-/*route params são obrigatórios*/
-  response.send(
-    `ID da mensagem é : ${id}.
-    Usuário é: ${user}.`
-  );
+app.use(express.json());
+app.use(routes);
+app.use((error, request, response, next) => {
+  if (error instanceof appError) {
+    return response.status(error.statusCode).json({
+      status: "error",
+      message: error.message,
+    });
+  }
+  console.error(error);
+  return response.status(500).json({
+    status: "error",
+    message: "internal server error",
+  });
+  
 });
-app.get("/users", (request, response) => {
-  const {page, limit} = request.query;
-  /*query params não são obrigatórios*/
-  response.send(
-    `Página é: ${page}.
-    Mostrar é: ${limit}.`
-  );
-});
-
 const port = 3000;
-
 app.listen(port, () => console.log(`Server is running on port ${port}`));
