@@ -3,7 +3,7 @@ const { Router } = require("express");
 const UsersController = require("../controllers/users.controller");
 
 const usersRoutes = Router();
-
+/*Middleware teste */
 function myMiddleware(request, response, next) {
 
   console.log(request.body);
@@ -32,5 +32,6 @@ usersRoutes.get("/", (request, response) => {
 });
 /*Método Post*/
 
-usersRoutes.post("/",myMiddleware, usersController.create);
+usersRoutes.post("/", usersController.create);
+usersRoutes.put("/:id",usersController.update)
 module.exports = usersRoutes;
