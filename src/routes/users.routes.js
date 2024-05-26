@@ -1,14 +1,13 @@
-const { Router } = require("express");
+const { Router } = require('express');
 
-const UsersController = require("../controllers/users.controller");
+const UsersController = require('../controllers/users.controller');
 
 const usersRoutes = Router();
 /*Middleware teste */
 function myMiddleware(request, response, next) {
-
   console.log(request.body);
-  if(!request.body.admin){
-    return response.json({message: "user unauthorized"})
+  if (!request.body.admin) {
+    return response.json({ message: 'user unauthorized' });
   }
   next();
 }
@@ -22,16 +21,16 @@ const usersController = new UsersController();
     Usuário é: ${user}.`
   );
 });*/
-usersRoutes.get("/", (request, response) => {
+usersRoutes.get('/', (request, response) => {
   const { page, limit } = request.query;
   /*query params não são obrigatórios*/
   response.send(
     `Página é: ${page}.
-    Mostrar é: ${limit}.`
+    Mostrar é: ${limit}.`,
   );
 });
 /*Método Post*/
 
-usersRoutes.post("/", usersController.create);
-usersRoutes.put("/:id",usersController.update)
+usersRoutes.post('/', usersController.create);
+usersRoutes.put('/:id', usersController.update);
 module.exports = usersRoutes;
